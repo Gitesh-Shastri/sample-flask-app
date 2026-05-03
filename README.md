@@ -33,4 +33,9 @@ API is available at `http://localhost:5000/tasks`.
 2. Open ShipReady → **Connect Repo** → paste the GitHub URL
 3. Run **AI Analysis** — score will be low (~30-40/100)
 4. Click **Apply All Fixes** → GitHub PR is created with Dockerfile, CI pipeline, tests, and more
-5. Click **Deploy to AWS ECS** → service goes live on Fargate
+5. Click **Deploy to AWS ECS** → service goes live on Fargate at `http://<public-ip>:8000/` (ShipReady auto-generates a Dockerfile with Gunicorn on port 8000). **`GET /`** returns a short JSON welcome; **`GET /tasks`** is the API.
+
+## Deployed URL shape
+
+- Base: `http://<task-public-ip>:8000/` → JSON with links
+- Tasks API: `http://<task-public-ip>:8000/tasks`

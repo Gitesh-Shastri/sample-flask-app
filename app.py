@@ -44,6 +44,16 @@ def init_db():
     conn.close()
 
 
+@app.route("/")
+def index():
+    """So opening http://<task-ip>:8000/ in a browser is not a bare 404."""
+    return jsonify({
+        "service": "sample-flask-app",
+        "tasks": "/tasks",
+        "note": "Minimal demo API for ShipReady — see README for intentional gaps.",
+    })
+
+
 @app.route("/tasks", methods=["GET"])
 def list_tasks():
     conn = get_db()
@@ -85,9 +95,11 @@ def delete_task(task_id):
     return "", 204
 
 
+# Ensure DB exists when served by Gunicorn on ECS (not only when running `python app.py`).
+init_db()
+
 # ❌ No /health endpoint — will fail load-balancer health checks
 # ❌ No /metrics endpoint — no observability
 # ❌ Debug mode always on
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True, host="0.0.0.0", port=5000)
